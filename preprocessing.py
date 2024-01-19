@@ -38,3 +38,22 @@ def get_individual_labels(diagnostic_keywords):
         return 'N'
     # if any of the above criteria do not match, then return as is
     return keywords[0] # u
+
+# write test cases
+# if both left and right are normal, then the final diagnosis is also normal
+def test_normal(row):
+    l,r = row['Left-label'], row['Right-label']
+    if l == 'N' and r == 'N' and row['N'] != 1:
+        return False
+    else:
+        return True
+
+def test_others(row):
+    l,r = row['Left-label'], row['Right-label']
+    if row['O'] == 1:
+        if l == 'O' or r == 'O':
+            return True
+        else:
+            return False 
+    return True
+
