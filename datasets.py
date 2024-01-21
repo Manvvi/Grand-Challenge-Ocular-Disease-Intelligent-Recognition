@@ -55,10 +55,10 @@ class ImageDataset(Dataset):
         label_name= self.labels[index]
        
         image_path= join("ODIR-5K_Training_Dataset",image_name)
-        image= Image.open(image_path).convert('RGB')
+        # image= Image.open(image_path).convert('RGB')
         label=labels_to_idx(label_name)
         if self.transforms:
-            image= self.transforms(image)
+            image= self.transforms(image_path)
         return image,label
        
 

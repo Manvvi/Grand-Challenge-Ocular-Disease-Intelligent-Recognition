@@ -60,6 +60,7 @@ def nonzero_bounding_box(img:np.ndarray, verbose=False):
     return h_left,h_right,w_top,w_bottom
 
 def crop_nonzero(img, verbose=False):
+    img = np.array(img)
     left, right, top, bottom = nonzero_bounding_box(img,verbose=verbose)
     return img[top:bottom,left:right,:]
 

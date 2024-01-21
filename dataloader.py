@@ -17,7 +17,7 @@ from ignite.handlers import ModelCheckpoint
 from ignite.contrib.handlers import TensorboardLogger, global_step_from_engine
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+# BATCH_SIZE=16
 
 class Net(nn.Module):
 
@@ -27,7 +27,7 @@ class Net(nn.Module):
         self.model = resnet18(num_classes=8)
 
         self.model.conv1 = self.model.conv1 = nn.Conv2d(
-            1, 64, kernel_size=3, padding=1, bias=False
+            3, 64, kernel_size=3, padding=1, bias=False
         )
 
     def forward(self, x):
@@ -39,11 +39,11 @@ model = Net().to(device)
 # data_transform = Compose([ToTensor(), Normalize((0.1307,), (0.3081,))])
 
 train_loader = DataLoader(
-    ImageDataset(csv_path=r'C:\Users\Dell\Desktop\grandchallenge\data\processed_train_.csv' ,transforms= get_img_transform(img_size=(224, 224))))
+    ImageDataset(csv_path=r'C:\Users\Dell\Desktop\grandchallenge\data\processed_train_.csv' ,transforms= get_img_transform(img_size=(224, 224))),batch_size=5,shuffle=True)
 
 
 val_loader = DataLoader(
-    ImageDataset(csv_path=r'C:\Users\Dell\Desktop\grandchallenge\data\processed_val-5K.csv',transforms=get_img_transform(img_size=(224, 224)))
+    ImageDataset(csv_path=r'C:\Users\Dell\Desktop\grandchallenge\data\processed_val-5K.csv',transforms=get_img_transform(img_size=(224, 224))),batch_size=5,shuffle=False
 )
 
 optimizer = torch.optim.RMSprop(model.parameters(), lr=0.005)
@@ -90,6 +90,7 @@ model_checkpoint = ModelCheckpoint(
     score_function=score_function,
     score_name="accuracy",
     global_step_transform=global_step_from_engine(trainer),
+    require_empty= False
 )
   
 val_evaluator.add_event_handler(Events.COMPLETED, model_checkpoint, {"model": model})
