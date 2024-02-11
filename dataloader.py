@@ -2,7 +2,6 @@
 
 from datasets import ImageDataset
 from transforms import  get_img_transform
-
 import tensorboard
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
@@ -25,7 +24,8 @@ class Net(nn.Module):
         super(Net, self).__init__()
     
         self.model = resnet18(num_classes=8)
-
+        # for param in model.parameters():
+        # param.requires_grad = False
         self.model.conv1 = self.model.conv1 = nn.Conv2d(
             3, 64, kernel_size=3, padding=1, bias=False
         )
